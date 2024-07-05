@@ -1,15 +1,12 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-
 const API_URL = "http://localhost:5163";
+
 export const login = async (credentials) => 
 {
     try {
-        const response = await axios.post(`${API_URL}/Auth/login`, credentials);
-        console.log("токен после запроса на сервер: ", response.data.token);
-        localStorage.setItem("jwt", response.data.token);
-        console.log("токен после сохранения в куки: ", localStorage.getItem("jwt"));
+        const response = await axios.post(`${API_URL}/Auth/login`, credentials, { withCredentials: true });
         return response.data;
     } catch(error) {
         console.log("Ошибка авторизации: ", error);
@@ -20,7 +17,6 @@ export const login = async (credentials) =>
 export const register = async (credentials) => {
     try {
         const response = await axios.post(`${API_URL}/Auth/register`, credentials);
-        console.log("данные ответа регистрации: ", response);
         return response.data;
     } catch (error) {
         console.log("Ошибка регистрации: ", error);
@@ -28,6 +24,12 @@ export const register = async (credentials) => {
     }
 };
 
-export const logout = () => {
-    Cookies.remove("jwt");
+export const logout = async () => {
+    try {
+        await axios.post(`${API_URL}/Auth/logout`, {}, { withCredentials: true });
+        Cookies.remove("jwt");
+    } catch (error) {
+        console.log("Ошибка при выходе из системы: ", error);
+        throw error;
+    }
 };

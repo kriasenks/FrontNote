@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 export const fetchNotes = async(filter) => {
     try {
-        const token = localStorage.getItem("jwt");
+        const token = Cookies.get("jwt");
         console.log("token: ", token);
         var response = await axios.get("http://localhost:5163/Notes", {
             params: {
@@ -14,6 +14,7 @@ export const fetchNotes = async(filter) => {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
+            withCredentials: true
         });
         return response.data.notes;
     } catch (e) {
@@ -23,11 +24,12 @@ export const fetchNotes = async(filter) => {
 
 export const createNote = async(note) => {
     try {
-        const token = localStorage.getItem("jwt");
+        const token = Cookies.get("jwt");
         var response = await axios.post("http://localhost:5163/Notes", note, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
+            withCredentials: true
         });
         return response.status;
     } catch (e) {
