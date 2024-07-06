@@ -16,28 +16,24 @@ export default function NotesPage() {
         sortOrder: "desc",
     });
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    //const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const checkAuth = () => {
-            const token = Cookies.get("jwt");
-            if (token !== undefined) {
-                setIsAuthenticated(true);
+            let token = Cookies.get("jwt");
+            var IsAuthenticated = false
+            //console.log("Токен для проверки авторизации: ", token)
+            if (token != null) {
+                IsAuthenticated = true;
             } else {
-                setIsAuthenticated(false);
+                IsAuthenticated = false;
             }
+            //console.log("isAuthenticated: ", IsAuthenticated);
+            IsAuthenticated ? navigate("/notes") : navigate("/login");
         };
 
         checkAuth();
-    }, []); // Run only once on component mount
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate("http://localhost:5163/notes");
-        } else {
-            navigate("/login");
-        }
-    }, [isAuthenticated]); // Run when isAuthenticated changes
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
