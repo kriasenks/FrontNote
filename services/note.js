@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 export const fetchNotes = async(filter) => {
     try {
         const token = Cookies.get("jwt");
-        console.log("token: ", token);
         var response = await axios.get("http://localhost:5163/Notes", {
             params: {
                 search: filter?.search,

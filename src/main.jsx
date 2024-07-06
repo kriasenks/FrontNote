@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ChakraProvider } from "@chakra-ui/react";
@@ -6,6 +6,7 @@ import App from './App';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import NotesPage from '../pages/NotesPage';
+import Note from '../components/Note';
 
 const RedirectToLogin = () => <Navigate to="/login" />;
 

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, VStack, HStack, Heading, Flex } from "@chakra-ui/react";
+import { Box, VStack, HStack, Heading, Flex, Button } from "@chakra-ui/react";
 import CreateNoteForm from "../components/CreateNoteForm";
 import Note from "../components/Note";
 import Filters from "../components/Filters";
 import { createNote, fetchNotes } from "../services/note.js";
+import { logout } from "../services/auth.js";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function NotesPage() {
     const [notes, setNotes] = useState([]);
@@ -12,6 +15,29 @@ export default function NotesPage() {
         sortItem: "date",
         sortOrder: "desc",
     });
+    const navigate = useNavigate();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const checkAuth = () => {
+            const token = Cookies.get("jwt");
+            if (token !== undefined) {
+                setIsAuthenticated(true);
+            } else {
+                setIsAuthenticated(false);
+            }
+        };
+
+        checkAuth();
+    }, []); // Run only once on component mount
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("http://localhost:5163/notes");
+        } else {
+            navigate("/login");
+        }
+    }, [isAuthenticated]); // Run when isAuthenticated changes
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,12 +46,22 @@ export default function NotesPage() {
         };
 
         fetchData();
-    }, [filter]);
+    }, [filter]); // Run when filter changes
 
     const onCreate = async (note) => {
         await createNote(note);
         let fetchedNotes = await fetchNotes(filter);
         setNotes(fetchedNotes);
+    };
+
+    const handleClick = async () => {
+        try {
+            await logout();
+            navigate('/login');
+        } catch (error) {
+            console.log("Ошибка при выходе из системы: ", error);
+            throw error;
+        }
     };
 
     return (
@@ -51,6 +87,7 @@ export default function NotesPage() {
                     <CreateNoteForm onCreate={onCreate} />
                     <Heading size="lg">Фильтры</Heading>
                     <Filters filter={filter} setFilter={setFilter} />
+                    <Button type="button" onClick={handleClick}>Выйти</Button>
                 </VStack>
                 <VStack spacing={5} w="2/3">
                     <Heading size="lg">Заметки</Heading>
