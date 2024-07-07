@@ -6,7 +6,7 @@ import {
 import { CloseIcon } from "@chakra-ui/icons";
 import moment from "moment/moment";
 
-export default function Note({ title, description, createdAt }) {
+export default function Note({ id, title, description, createdAt, onDelete }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -21,7 +21,7 @@ export default function Note({ title, description, createdAt }) {
           position="absolute"
           top="8px"
           right="8px"
-          // onClick={onDelete}
+          onClick={() => onDelete(id)}  // Добавлен вызов onDelete с id заметки
           aria-label="Delete Note"
         />
       )}
@@ -37,4 +37,3 @@ export default function Note({ title, description, createdAt }) {
     </Card>
   );
 }
-

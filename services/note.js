@@ -35,3 +35,17 @@ export const createNote = async (note) => {
         console.error(e);
     }
 };
+
+export const deleteNote = async (id) => {
+    try {
+        const token = Cookies.get("jwt");
+        await axios.delete(`http://localhost:5163/Notes/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}

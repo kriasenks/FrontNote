@@ -3,7 +3,7 @@ import { Box, VStack, HStack, Heading, Flex, Button } from "@chakra-ui/react";
 import CreateNoteForm from "../components/CreateNoteForm";
 import Note from "../components/Note";
 import Filters from "../components/Filters";
-import { createNote, fetchNotes } from "../services/note.js";
+import { createNote, fetchNotes, deleteNote } from "../services/note.js";
 import { logout } from "../services/auth.js";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -41,6 +41,12 @@ export default function NotesPage() {
 
     const onCreate = async (note) => {
         await createNote(note);
+        let fetchedNotes = await fetchNotes(filter);
+        setNotes(fetchedNotes);
+    };
+
+    const onDelete = async (id) => { // Добавлена функция onDelete
+        await deleteNote(id);
         let fetchedNotes = await fetchNotes(filter);
         setNotes(fetchedNotes);
     };
@@ -92,9 +98,11 @@ export default function NotesPage() {
                             boxShadow="md"
                         >
                             <Note
+                                id={n.id}
                                 title={n.title}
                                 description={n.description}
                                 createdAt={n.createdAt}
+                                onDelete={onDelete} // Передаем onDelete в Note
                             />
                         </Box>
                     ))}
