@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Input, Box, Heading, VStack, Text } from "@chakra-ui/react";
 import { register } from "../services/auth";
 import { useNavigate, Link } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const Register = () => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkAuth = () => {
+            let token = Cookies.get("jwt");
+            var IsAuthenticated = false
+
+            token != null ? IsAuthenticated = true : IsAuthenticated = false;
+
+            IsAuthenticated ? navigate("/notes") : navigate("/login");
+        };
+
+        checkAuth();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

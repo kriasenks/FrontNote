@@ -29,11 +29,11 @@ export const logout = async () => {
     try {
         const token = Cookies.get("jwt");
         var response = await axios.post(`${API_URL}/Auth/logout`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                withCredentials: true
-            });
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true
+        });
         Cookies.remove("jwt");
         return response.status;
     } catch (error) {

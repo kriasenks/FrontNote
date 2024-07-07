@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export const fetchNotes = async(filter) => {
+export const fetchNotes = async (filter) => {
     try {
         const token = Cookies.get("jwt");
         var response = await axios.get("http://localhost:5163/Notes", {
@@ -21,7 +21,7 @@ export const fetchNotes = async(filter) => {
     }
 };
 
-export const createNote = async(note) => {
+export const createNote = async (note) => {
     try {
         const token = Cookies.get("jwt");
         var response = await axios.post("http://localhost:5163/Notes", note, {

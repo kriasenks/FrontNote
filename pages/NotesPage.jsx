@@ -16,19 +16,14 @@ export default function NotesPage() {
         sortOrder: "desc",
     });
     const navigate = useNavigate();
-    //const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const checkAuth = () => {
             let token = Cookies.get("jwt");
             var IsAuthenticated = false
-            //console.log("Токен для проверки авторизации: ", token)
-            if (token != null) {
-                IsAuthenticated = true;
-            } else {
-                IsAuthenticated = false;
-            }
-            //console.log("isAuthenticated: ", IsAuthenticated);
+
+            token != null ? IsAuthenticated = true : IsAuthenticated = false;
+
             IsAuthenticated ? navigate("/notes") : navigate("/login");
         };
 
@@ -42,7 +37,7 @@ export default function NotesPage() {
         };
 
         fetchData();
-    }, [filter]); // Run when filter changes
+    }, [filter]);
 
     const onCreate = async (note) => {
         await createNote(note);

@@ -14,7 +14,7 @@ export default function Note({ title, description, createdAt }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       position="relative">
-        {isHovered && (
+      {isHovered && (
         <IconButton
           icon={<CloseIcon />}
           size="sm"
